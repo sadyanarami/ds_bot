@@ -1,8 +1,11 @@
 # This example requires the 'members' and 'message_content' privileged intents to function.
 
 import discord
-from discord.ext import commands
+import os
 import requests
+import config
+
+from discord.ext import commands
 from bs4 import BeautifulSoup
 
 
@@ -72,4 +75,5 @@ async def xyesos(ctx, member: discord.Member, times: int):
         print(e)
 
 
-bot.run("MTIyMzcwODc0NzUwNzk2MTk4Mg.G4uyWc._XTuR7Yc4L6ZCkoknxydA_OX0zhRNtOsPkPIE4")
+if __name__ == "__main__":
+    bot.run(token=config.BOT_TOKEN)
