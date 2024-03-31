@@ -75,5 +75,34 @@ async def xyesos(ctx, member: discord.Member, times: int):
         print(e)
 
 
+@bot.command()
+async def film(ctx, name: str):
+    try:
+        headers = {"X-API-KEY": config.X_API_KEY, "acccept": "application/json"}
+        response = requests.get(
+            f"https://api.kinopoisk.dev/v1.4/movie/search?page=1&limit=1&query={name}",
+            headers=headers,
+        )
+        if response.status_code == 200:
+            data = response.json()
+            film_data = data["docs"]
+            film_name = film_data[0]["name"]
+            film_description = film_data[0]["description"]
+            film_poster = film_data[0]["poster"]
+            film_genres = film_data[0]["genres"]
+            geners = ""
+            for genre in film_genres:
+                geners += genre["name"] + ", "
+
+            embed = discord.Embed()
+            poster_pic = embed.set_image(url=film_poster["url"])
+        else:
+            print(f"Ошибка: {response.status_code}")
+        message = f"{film_name}\n\n{film_description}\n\nЖанры: {geners}"
+        await ctx.send(message, embed=poster_pic)
+    except Exception as e:
+        await ctx.send("https://tenor.com/view/imba3-gif-25714137")
+
+
 if __name__ == "__main__":
     bot.run(token=config.BOT_TOKEN)
